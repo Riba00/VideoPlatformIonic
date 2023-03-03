@@ -54,6 +54,7 @@ import {
   IonToolbar
 } from '@ionic/vue';
 import casteaching from "@acacha/casteaching";
+
 const api = casteaching({baseUrl:'http://casteachingriba.test/api/'})
 
 export default {
