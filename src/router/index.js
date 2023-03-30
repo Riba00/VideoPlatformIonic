@@ -3,9 +3,22 @@ import store from "../store";
 
 const routes = [
     {
+        path: '/dashboard',
+        component: ()=> import(/* webpackChunkName: "Dashboard"*/'../views/Dashboard.vue'),
+        name: 'dashboard',
+        meta: {
+            private: true
+        }
+    },
+    {
         path: '/login',
         component: ()=> import(/* webpackChunkName: "Login"*/'../views/Login.vue'),
         name: 'login'
+    },
+    {
+        path: '/logout',
+        component: ()=> import(/* webpackChunkName: "Logout"*/'../views/Logout.vue'),
+        name: 'logout'
     },
     {
         path: '/user',
@@ -43,10 +56,10 @@ const router = createRouter({
     routes
 })
 
-router.beforeEach((to,from,next) => {
+router.beforeEach(async(to,from,next) => {
     var authenticated = false;
-
-    if (store.get('user') !== null)
+    const user = await store.get('user')
+    if (user !== null)
         authenticated = true;
 
     if (to.meta.private && !authenticated) {
