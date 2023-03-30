@@ -52,7 +52,6 @@ import {
   IonInput
 } from "@ionic/vue";
 import { Device } from '@capacitor/device';
-import axios from 'axios';
 import store from "../store";
 
 export default {
@@ -87,46 +86,20 @@ export default {
 
       let token = null
       const device_name = (info && info.name) || 'TokenCasteachingIonic'
-      const apiClient = axios.create({
-        baseURL: 'https://casteachingriba.test/api',
-        withCredentials: true,
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        }
-      })
-      const postData = {
-        email: this.email,
-        password: this.password,
-        device_name: device_name
-      }
-      let response
+
       try {
-        response = await apiClient.post('/sanctum/token',postData)
+        token = await this.casteaching.login(this.email, this.password, device_name)
+        this.casteaching.setToken(token)
+      }catch (error) {
+        console.log(error);
+      }
+
+      let user
+      try {
+        user = await this.casteaching.user()
       }catch (error){
         console.log(error);
       }
-      token = response.data
-
-      const axiosClient = axios.create({
-        baseURL: 'https://casteachingriba.test/api',
-        withCredentials: true,
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + token
-        }
-      })
-
-      let response2
-      try {
-        response2 = await axiosClient.get('/user')
-      }catch (error){
-        console.log(error);
-      }
-      const user = response2.data
-
-
       await store.set('token', token)
       await store.set('user', user)
 

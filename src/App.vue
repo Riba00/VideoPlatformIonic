@@ -46,21 +46,21 @@ import {
   IonRouterOutlet,
   IonSplitPane
 } from '@ionic/vue';
-import {defineComponent, ref} from 'vue';
+import {defineComponent} from 'vue';
 import {useRoute} from 'vue-router';
 import {
   archiveOutline,
   archiveSharp,
   bookmarkOutline,
-  bookmarkSharp,
+  bookmarkSharp, calendarClear,
   heartOutline,
-  heartSharp,
+  heartSharp, logIn, logOut,
   mailOutline,
   mailSharp,
   paperPlaneOutline,
-  paperPlaneSharp,
+  paperPlaneSharp, person,
   trashOutline,
-  trashSharp,
+  trashSharp, videocam, videocamSharp,
   warningOutline,
   warningSharp
 } from 'ionicons/icons';
@@ -84,7 +84,8 @@ export default defineComponent({
   },
   data() {
     return {
-      appPages: []
+      appPages: [],
+      selectedIndex: null
     }
   },
   created() {
@@ -99,13 +100,11 @@ export default defineComponent({
     this.setAppPages()
   },
   setup() {
-    const selectedIndex = ref(0);
     const labels = ['Family', 'Friends', 'Notes', 'Work', 'Travel', 'Reminders'];
 
     const route = useRoute();
 
     return {
-      selectedIndex,
       labels,
       archiveOutline,
       archiveSharp,
@@ -126,50 +125,56 @@ export default defineComponent({
   },
   methods: {
     async setAppPages() {
+      this.selectedIndex = 0;
       this.appPages = []
       const user = await store.get('user')
       if (user) {
         this.appPages.push({
           title: 'Dashboard',
           url: '/dashboard',
-          iosIcon: mailOutline,
-          mdIcon: mailSharp
+          iosIcon: calendarClear,
+          mdIcon: calendarClear
         })
         this.appPages.push(
             {
               title: 'User Profile',
               url: '/user',
-              iosIcon: mailOutline,
-              mdIcon: mailSharp
+              iosIcon: person,
+              mdIcon: person
             })
       }
       if (!user) {
         this.appPages.push({
           title: 'Login',
           url: '/login',
-          iosIcon: mailOutline,
-          mdIcon: mailSharp
+          iosIcon: logIn,
+          mdIcon: logIn
         })
       } else {
         this.appPages.push({
           title: 'Logout',
           url: '/logout',
-          iosIcon: mailOutline,
-          mdIcon: mailSharp
+          iosIcon: logOut,
+          mdIcon: logOut
         })
       }
       this.appPages.push({
         title: 'Video 1',
         url: '/videos/1',
-        iosIcon: mailOutline,
-        mdIcon: mailSharp
+        iosIcon: videocam,
+        mdIcon: videocam
       })
       this.appPages.push({
         title: 'Videos',
         url: '/videos',
-        iosIcon: paperPlaneOutline,
-        mdIcon: paperPlaneSharp
+        iosIcon: videocamSharp,
+        mdIcon: videocamSharp
       })
+
+      const path = window.location.pathname;
+      if (path !== undefined) {
+        this.selectedIndex = this.appPages.findIndex(page=> page.url.toLowerCase() === path.toLowerCase())
+      }
     }
   }
 });

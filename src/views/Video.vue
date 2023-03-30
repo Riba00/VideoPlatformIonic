@@ -53,9 +53,6 @@ import {
   IonTitle,
   IonToolbar
 } from '@ionic/vue';
-import casteaching from "@acacha/casteaching";
-
-const api = casteaching({baseUrl:'http://casteachingriba.test/api/'})
 
 export default {
   name: 'Video',
@@ -79,7 +76,13 @@ export default {
     }
   },
   async created() {
-    this.video = await api.video.show(this.$route.params.id)
+    try {
+      this.video = await this.casteaching.video.show(this.$route.params.id)
+    }catch (error){
+      console.log(error)
+    }
+
+
     // this.video = {
     //   "id": 2,
     //   "title": "Video 1",

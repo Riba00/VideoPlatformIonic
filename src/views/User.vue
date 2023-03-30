@@ -16,9 +16,15 @@
         </ion-toolbar>
       </ion-header>
 
+
       <div>
+        <ion-avatar>
+          <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+        </ion-avatar>
         <h1>User</h1>
-        name: {{ this.user && this.user.name}}
+        <p>Name: {{ this.user && this.user.name}}</p>
+        <p>Email: {{ this.user && this.user.email}}</p>
+
       </div>
     </ion-content>
   </ion-page>
@@ -27,6 +33,7 @@
 
 <script>
 import {
+  IonAvatar,
   IonButtons,
   IonContent,
   IonHeader,
@@ -44,7 +51,8 @@ export default {
     IonMenuButton,
     IonPage,
     IonTitle,
-    IonToolbar
+    IonToolbar,
+    IonAvatar
   },
   data() {
     return {
